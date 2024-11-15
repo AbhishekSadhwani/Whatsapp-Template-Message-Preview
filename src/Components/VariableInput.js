@@ -23,6 +23,7 @@ export const VariableInput = ({ selectedTemplate, variables, onVariablesChange, 
           </div>
         );
       })}
+      
       <button onClick={() => setVariables({})} className="px-2 py-1 rounded-md mt-5 bg-black text-white ">Reset</button>
     </div>
   );
