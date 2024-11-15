@@ -3,7 +3,6 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 
 // Component for Message Preview
 export const PreviewDisplay = ({ preview, variables }) => {
-  console.log(variables);
   return (
     <div className="bg-[#efeae2] flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg overflow-hidden">

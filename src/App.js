@@ -14,7 +14,7 @@ function App() {
 
     const fetchData = async () => {
       try{
-          const response = await fetch('http://localhost:5000/api/templates');
+          const response = await fetch(`${process.env.REACT_APP_API_HOST}api/templates`);
           if (!response.ok){
               throw new Error("Error fetching templates: "+ response.statusText);
           }
@@ -48,14 +48,17 @@ function App() {
         }
       
       };
-
-      const response = await fetch("http://localhost:5000/api/preview", requestData);
-      
-      if(!response.ok){
-        throw new Error("Error fetching templates: "+ response.statusText);
-      }else{
-        const data = await response.json();
-        setPreview(data.preview);
+      try{
+        const response = await fetch(`${process.env.REACT_APP_API_HOST}api/preview`, requestData);
+        
+        if(!response.ok){
+          throw new Error("Error fetching templates: "+ response.statusText);
+        }else{
+          const data = await response.json();
+          setPreview(data.preview);
+        };
+      }catch(error){
+        console.log(error);
       }
     };
 
@@ -112,6 +115,7 @@ function App() {
                 selectedTemplate={selectedTemplate}
                 variables={variables}
                 onVariablesChange={handleVariableChange}
+                setVariables={setVariables}
               />
             </div>
           )}
