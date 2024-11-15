@@ -14,7 +14,7 @@ function App() {
 
     const fetchData = async () => {
       try{
-          const response = await fetch(`${process.env.REACT_APP_API_HOST}api/templates`);
+          const response = await fetch(`${process.env.REACT_APP_API_HOST}/api/templates`);
           if (!response.ok){
               throw new Error("Error fetching templates: "+ response.statusText);
           }
@@ -49,7 +49,7 @@ function App() {
       
       };
       try{
-        const response = await fetch(`${process.env.REACT_APP_API_HOST}api/preview`, requestData);
+        const response = await fetch(`${process.env.REACT_APP_API_HOST}/api/preview`, requestData);
         
         if(!response.ok){
           throw new Error("Error fetching templates: "+ response.statusText);
