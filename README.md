@@ -1,70 +1,183 @@
-# Getting Started with Create React App
+# WhatsApp Template Message Preview System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simple application for managing and previewing WhatsApp message templates. This project uses ReactJS for the frontend and Node.js for the backend, with TailwindCSS for styling and supports dynamic placeholders for generating previews.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- View predefined WhatsApp message templates.
+- Replace placeholders ({{variable}}) in templates with dynamic values to generate previews.
+- Multiline template support for better readability.
+- Responsive UI using TailwindCSS.
 
-### `npm start`
+## Setup Instructions
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Prerequisites
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Ensure you have the following installed:
 
-### `npm test`
+- Node.js (v14 or higher)
+- npm or yarn
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Steps
 
-### `npm run build`
+#### Frontend
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Clone the Repository:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+git clone https://github.com/AbhishekSadhwani/Whatsapp-Template-Message-Preview
+cd Whatsapp-Template-Message-Preview
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. Install Dependencies:
 
-### `npm run eject`
+```bash
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. Start the Application:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- The application will run on http://localhost:3000.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#### Backend
 
-## Learn More
+1. Clone the Repository:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+git clone https://github.com/AbhishekSadhwani/Whatsapp-template-Message-preview-Backend
+cd Whatsapp-template-Message-preview-Backend
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. Install Dependencies:
 
-### Code Splitting
+```bash
+npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+3. Start the Application:
 
-### Analyzing the Bundle Size
+```bash
+node server.js
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- The application will run on http://localhost:5000.
 
-### Making a Progressive Web App
+## Approach Explanation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 1. Frontend:
 
-### Advanced Configuration
+- ReactJS is used to create a clean and responsive UI.
+- TailwindCSS simplifies styling with utility classes.
+- Components include:
+  - **TemplateSelector**: Allows users to select a template.
+  - **VariableInput**: Captures user input for placeholders dynamically.
+  - **PreviewDisplay**: Displays the generated preview with support for multiline rendering.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### 2. Backend:
 
-### Deployment
+- Node.js with an in-memory database (templates.js) simulates storing templates.
+- API endpoints handle retrieving templates and generating previews by replacing placeholders with user-provided variables.
+- Error handling ensures robust operation:
+  - Missing templateId or variables triggers appropriate error messages.
+  - Nonexistent templates or incomplete variables return descriptive errors.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### 3. Template Parsing Logic:
 
-### `npm run build` fails to minify
+- Placeholders are identified using regex: /{{(.*?)}}/g.
+- Placeholders are replaced dynamically with values provided in the request body.
+- Supports multiline templates with \n preserved in the response.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## API Documentation
+
+### 1. Get All Templates
+
+#### Endpoint:
+
+```bash
+GET /api/templates
+```
+
+#### Description:
+
+Retrieve all available WhatsApp templates.
+
+#### Response
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Order Confirmation",
+    "template": "Hello, {{Name}}! Your order #{{OrderNumber}} is confirmed for Rs.{{Amount}}. We'll deliver it to {{DeliveryAddress}}."
+  }
+]
+```
+
+### 2. Generate Template Preview
+
+#### Endpoint:
+
+```bash
+POST /api/templates/preview
+```
+
+#### Description:
+
+Generate a preview of the template with the provided dynamic variables.
+
+#### Request Body:
+
+```json
+{
+  "templateId": 1,
+  "variables": {
+    "name": "Abhi",
+    "orderNumber": "12345",
+    "amount": "1500",
+    "deliveryAddress": "Jaipur, Rajasthan"
+  }
+}
+```
+
+#### Response
+
+```json
+{
+  "preview": "Hello, Abhi! Your order #12345 is confirmed for Rs.1500.We'll deliver it to Jaipur, Rajasthan."
+}
+```
+
+#### Error Responses
+
+- 400: Missing or invalid input (e.g., missing variables or templateId).
+
+```json
+{ "error": "Template ID is required" }
+```
+
+- 404: Template not found.
+
+```json
+{ "error": "Template not found" }
+```
+
+## Future Improvements
+
+### Backend
+
+- Authentication: Add user authentication to manage personal templates.
+- Database Integration: Use a database (e.g., MongoDB, PostgreSQL) for persistent storage of templates.
+
+### Frontend
+
+- Error Handling UI: Display errors more elegantly with modals or toast notifications.
+- Save Templates: Enable users to create, edit, and save their own templates.
+
+## Deployment
+
+- Frontend: [https://message-preview-template.netlify.app/](https://message-preview-template.netlify.app/)
+- Backend deployed on Render.
